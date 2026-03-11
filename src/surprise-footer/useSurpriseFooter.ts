@@ -233,6 +233,7 @@ export function useSurpriseFooter() {
       );
 
       setTimeout(() => {
+        if (!engine) return;
         for (const o of orbs) {
           orbMap.delete(o.id);
           Matter.Composite.remove(engine.world, o);
@@ -242,7 +243,7 @@ export function useSurpriseFooter() {
     }
 
     const onResize = () => {
-      if (!engine) return;
+      if (!engine || !canvas) return;
       const b = rect();
       const dpr = window.devicePixelRatio || 1;
       canvas.width = Math.floor(b.width * dpr);
@@ -274,6 +275,7 @@ export function useSurpriseFooter() {
 
       const dpr = window.devicePixelRatio || 1;
       const b = rect();
+      if (!canvas) return;
       canvas.width = Math.floor(b.width * dpr);
       canvas.height = Math.floor(b.height * dpr);
 
