@@ -76,6 +76,19 @@ const WORK_ITEMS: WorkItem[] = [
   },
 ];
 
+function ScrambleTitle({ text }: { text: string }) {
+  const { displayText, scramble, reset } = useScrambleText(text);
+  return (
+    <h3
+      className="text-lg font-semibold tracking-tight text-foreground cursor-default"
+      onMouseEnter={scramble}
+      onMouseLeave={reset}
+    >
+      {displayText}
+    </h3>
+  );
+}
+
 function PlaceholderIcon() {
   return (
     <div
@@ -184,9 +197,7 @@ export default function WorkCarousel() {
         >
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h3 className="text-lg font-semibold tracking-tight text-foreground">
-                {expandedItem.title}
-              </h3>
+              <ScrambleTitle text={expandedItem.title} />
               <p className="mt-2 text-muted-foreground leading-relaxed">
                 {expandedItem.description}
               </p>

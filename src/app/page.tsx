@@ -70,11 +70,10 @@ export default function Home() {
           </nav>
       </header>
 
-      <div className="bg-black">
-
-      <div className="relative z-10 w-full bg-white rounded-b-3xl">
+      {/* Centered card with rounded bottom so fluid shows on sides and below; doesn’t cover fluid. */}
+      <div className="relative z-10 mx-auto w-full max-w-3xl px-6 rounded-b-3xl bg-background overflow-hidden">
       {/* Hero — Wabi-style: one clear message, lots of space */}
-      <main id="main" className="mx-auto max-w-3xl px-6 pt-32 pb-24 sm:pt-40 sm:pb-32">
+      <main id="main" className="pt-32 pb-24 sm:pt-40 sm:pb-32">
           <section className="flex flex-col gap-8">
             <h1 className="text-4xl font-semibold tracking-tight leading-[1.1] text-foreground sm:text-5xl md:text-6xl">
             Full Stack Developer. Builder of cool things.
@@ -176,11 +175,7 @@ export default function Home() {
           </div>
       </footer>
 
-      
       </div>
-     
-      </div>
-      
 
       <SurpriseFooter />
       </FormlessAnimatedContainer>
