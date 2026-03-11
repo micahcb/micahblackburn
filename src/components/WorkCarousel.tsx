@@ -2,50 +2,68 @@
 
 import { useState, useCallback } from "react";
 import clsx from "clsx";
+import Image from "next/image";
 
 export type WorkItem = {
   id: string;
   title: string;
   description: string;
+  href?: string;
+  logo?: string;
 };
 
-const EXAMPLE_WORK: WorkItem[] = [
+const WORK_ITEMS: WorkItem[] = [
   {
-    id: "1",
-    title: "Project Alpha",
+    id: "smartbettor",
+    title: "Smartbettor.ai",
     description:
-      "A comprehensive platform that helps teams collaborate in real time. Built with a modern stack and a focus on performance and accessibility.",
+      "Web app for sports betting insights and analysis. Built with a modern stack to help users make data-informed decisions.",
+    href: "https://www.smartbettor.ai/",
+    logo: "/work_logos/SmartBettor.png",
   },
   {
-    id: "2",
-    title: "Design System",
+    id: "oddible",
+    title: "Oddible.ai",
     description:
-      "Component library and design tokens used across multiple products. Ensures visual and interaction consistency and speeds up development.",
+      "React Native mobile app — the companion to Smartbettor.ai. Cross-platform iOS and Android with shared business logic and native-feel UI.",
+    href: "https://www.oddible.ai/",
+    logo: "/work_logos/Oddible.png",
   },
   {
-    id: "3",
-    title: "Mobile App",
+    id: "sycamore",
+    title: "Sycamore",
     description:
-      "Native-feel mobile experience for ordering and tracking. Shipped to iOS and Android with shared business logic and platform-specific UI.",
+      "Personal finance web app and Swift iOS app. Full-stack budgeting and tracking, deployed on Railway with a native iOS client.",
+    href: "https://sycamore-production-0924.up.railway.app/",
+    logo: "/work_logos/Sycamore.svg",
   },
   {
-    id: "4",
-    title: "Data Dashboard",
+    id: "charles-schwab",
+    title: "Charles Schwab",
     description:
-      "Real-time analytics and reporting for internal teams. Custom visualizations and export options built on a flexible data pipeline.",
+      "Engineering work at Charles Schwab — building and maintaining financial platforms and tooling for advisors and clients.",
+    logo: "/work_logos/CharlesSchwab.png",
   },
   {
-    id: "5",
-    title: "E-commerce Redesign",
+    id: "sparkbeyond",
+    title: "SparkBeyond",
     description:
-      "End-to-end redesign of checkout and product discovery. Improved conversion and reduced cart abandonment with clearer UX.",
+      "AI and data science platform work — building tools and pipelines that help organizations discover insights from complex data.",
+    logo: "/work_logos/SparkBeyond.png",
+  },
+  {
+    id: "nyrr-bot",
+    title: "NYRR Discord Bot",
+    description:
+      "Discord bot that scrapes NYRR race schedules and surfaces volunteer opportunities so users can easily find and sign up for events.",
+    logo: "/work_logos/NYRR.png",
   },
 ];
 
 function PlaceholderIcon() {
   return (
     <div
-      className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl bg-muted text-muted-foreground"
+      className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl bg-background/80 text-muted-foreground"
       aria-hidden
     >
       <svg
@@ -77,12 +95,12 @@ export default function WorkCarousel() {
   }, []);
 
   const expandedItem = expandedId
-    ? EXAMPLE_WORK.find((w) => w.id === expandedId)
+    ? WORK_ITEMS.find((w) => w.id === expandedId)
     : null;
   const shouldPause = isHovering || expandedId !== null;
 
   return (
-    <section id="work" className="mt-32 pt-16 border-t border-border/40">
+    <section id="work" className="mt-32 pt-16 border-t border-black">
       <h2 className="text-2xl font-semibold tracking-tight text-foreground mb-8">
         Work
       </h2>
@@ -102,18 +120,31 @@ export default function WorkCarousel() {
             }}
           >
             {/* Duplicate set for seamless loop */}
-            {[...EXAMPLE_WORK, ...EXAMPLE_WORK].map((item, index) => (
+            {[...WORK_ITEMS, ...WORK_ITEMS].map((item, index) => (
               <button
                 key={`${item.id}-${index}`}
                 type="button"
                 onClick={() => handleItemClick(item.id)}
                 className={clsx(
-                  "group flex shrink-0 flex-col items-center gap-3 rounded-lg p-4 transition-colors",
-                  "hover:bg-muted/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                  expandedId === item.id && "bg-muted/70"
+                  "group flex shrink-0 flex-col items-center gap-3 rounded-lg p-4 transition-colors cursor-pointer bg-secondary/70",
+                  "hover:bg-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                  expandedId === item.id && "bg-secondary"
                 )}
               >
-                <PlaceholderIcon />
+                {item.logo ? (
+                  <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-background/80">
+                    <Image
+                      src={item.logo}
+                      alt=""
+                      width={80}
+                      height={80}
+                      className="object-contain p-2"
+                      unoptimized={item.logo.endsWith(".svg")}
+                    />
+                  </div>
+                ) : (
+                  <PlaceholderIcon />
+                )}
                 <span className="text-sm font-medium text-foreground text-center max-w-[100px] opacity-0 transition-opacity duration-150 group-hover:opacity-100">
                   {item.title}
                 </span>
@@ -126,7 +157,7 @@ export default function WorkCarousel() {
       {/* Expanded description */}
       {expandedItem && (
         <div
-          className="mt-8 rounded-lg border border-border/40 bg-muted/30 p-6 animate-in fade-in slide-in-from-top-2 duration-200"
+          className="mt-8 rounded-lg border border-border/50 bg-secondary p-6 animate-in fade-in slide-in-from-top-2 duration-200"
           role="region"
           aria-label={`Description for ${expandedItem.title}`}
         >
@@ -138,6 +169,16 @@ export default function WorkCarousel() {
               <p className="mt-2 text-muted-foreground leading-relaxed">
                 {expandedItem.description}
               </p>
+              {expandedItem.href && (
+                <a
+                  href={expandedItem.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-block text-sm font-medium text-foreground underline underline-offset-4 hover:text-muted-foreground transition-colors"
+                >
+                  Visit site →
+                </a>
+              )}
             </div>
             <button
               type="button"

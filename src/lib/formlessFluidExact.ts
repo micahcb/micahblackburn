@@ -131,7 +131,7 @@ export class FormlessFluidExact {
 
     this.renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    this.renderer.setClearColor(0x000000, 0);
+    this.renderer.setClearColor(0xffffff, 0);
     this.wrapper.appendChild(this.renderer.domElement);
     console.log("[FormlessFluidExact] canvas appended, size will be set in resize()");
 
@@ -368,7 +368,7 @@ export class FormlessFluidExact {
           float g = vel.y * 0.85;
           float b = vel.x * 1.0;
           vec3 color = vec3(r, g, b);
-          vec3 ambient = vec3(0.03, 0.02, 0.06);
+          vec3 ambient = vec3(0.97, 0.97, 1.0);
           color = mix(ambient, color * uColorScale, min(len * 2.0, 1.0));
           gl_FragColor = vec4(color, 1.0);
         }

@@ -73,10 +73,10 @@ export default function Home() {
       <main id="main" className="mx-auto max-w-3xl px-6 pt-32 pb-24 sm:pt-40 sm:pb-32">
           <section className="flex flex-col gap-8">
             <h1 className="text-4xl font-semibold tracking-tight leading-[1.1] text-foreground sm:text-5xl md:text-6xl">
-            Designer & developer building products that matter.
+            Full Stack Developer. Builder of cool things.
             </h1>
             <p className="max-w-xl text-lg sm:text-xl text-muted-foreground leading-relaxed">
-            Welcome to the era of personal software — where craft meets clarity.
+            My name is Micah — Go Blue.
             </p>
             <div className="flex flex-wrap gap-4 pt-2 items-center">
               <Button asChild size="lg" className="rounded-full px-6">
@@ -93,7 +93,7 @@ export default function Home() {
 
           <WorkCarousel />
 
-          <section id="contact" className="mt-32 pt-16 border-t border-border/40">
+          <section id="contact" className="mt-32 pt-16 border-t border-black ">
             <h2
               className="text-2xl font-semibold tracking-tight text-foreground cursor-default"
               onMouseEnter={contactHeader.scramble}

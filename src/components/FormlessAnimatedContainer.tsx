@@ -57,7 +57,7 @@ export default function FormlessAnimatedContainer({
           <div
             className="s-full absolute left-0 top-0 h-full w-full"
             style={{
-              background: `linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) ${gradientBottom}%)`,
+              background: `linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) ${gradientBottom}%)`,
             }}
           />
         )}
@@ -65,7 +65,7 @@ export default function FormlessAnimatedContainer({
           <div
             className="s-full absolute left-0 top-0 h-full w-full"
             style={{
-              background: `linear-gradient(0deg, rgba(0,0,0,0) ${100 - gradientTop}%, rgba(0,0,0,1) 100%)`,
+              background: `linear-gradient(0deg, rgba(255,255,255,0) ${100 - gradientTop}%, rgba(255,255,255,1) 100%)`,
             }}
           />
         )}

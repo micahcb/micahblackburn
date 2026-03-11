@@ -7,11 +7,11 @@ import gsap from "gsap";
 type MenuItem = { label: string; href: string };
 
 const MENU_ITEMS: MenuItem[] = [
-  { label: "Portfolio", href: "#portfolio" },
-  { label: "Team", href: "#team" },
-  { label: "Thesis", href: "#thesis" },
-  { label: "News", href: "#news" },
-  { label: "Contact", href: "#contact" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/micah-blackburn/" },
+  { label: "Github", href: "https://github.com/micahcb" },
+  { label: "Oddible", href: "https://www.oddible.ai/" },
+  { label: "Smartbettor", href: "https://www.smartbettor.ai/" },
+  { label: "Sycamore", href: "https://sycamore-production-0924.up.railway.app/" },
 ];
 
 function pad4(n: number) {
@@ -198,6 +198,8 @@ export default function BottomBar() {
                 <div ref={(el) => { itemRefs.current[i] = el; }}>
                   <a
                     href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className={clsx(
                       "pointer-events-auto inline-flex min-w-[110px] cursor-pointer justify-center rounded-full whitespace-nowrap",
                       "border border-white/20 bg-white/10 px-4 py-2 text-xs uppercase tracking-wide text-white",
