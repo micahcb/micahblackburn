@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { LordIcon } from "@/components/lord-icon";
 import { useScrambleText } from "@/hooks/useScrambleText";
 import BottomBar from "@/components/BottomBar";
+import { SurpriseFooter } from "@/surprise-footer/SurpriseFooter";
 import FormlessBoot from "@/components/FormlessBoot";
 import FormlessAnimatedContainer from "@/components/FormlessAnimatedContainer";
 import WorkCarousel from "@/components/WorkCarousel";
@@ -69,6 +70,8 @@ export default function Home() {
           </nav>
       </header>
 
+      {/* Content block with solid bg; z-10 so rounded bottom paints above surprise footer */}
+      <div className="relative z-10 w-full bg-background rounded-b-3xl">
       {/* Hero — Wabi-style: one clear message, lots of space */}
       <main id="main" className="mx-auto max-w-3xl px-6 pt-32 pb-24 sm:pt-40 sm:pb-32">
           <section className="flex flex-col gap-8">
@@ -169,9 +172,12 @@ export default function Home() {
             © {new Date().getFullYear()} Micah Blackburn
           </div>
       </footer>
+      </div>
+
+      <SurpriseFooter />
+      </FormlessAnimatedContainer>
 
       <BottomBar />
-      </FormlessAnimatedContainer>
     </div>
   );
 }

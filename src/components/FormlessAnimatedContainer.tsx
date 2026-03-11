@@ -19,6 +19,8 @@ type Props = {
   children?: React.ReactNode;
   gradientTop?: number;
   gradientBottom?: number;
+  /** When true, fluid uses full RGB color; when false, greyscale only. */
+  useFullColor?: boolean;
 };
 
 export default function FormlessAnimatedContainer({
@@ -28,6 +30,7 @@ export default function FormlessAnimatedContainer({
   children,
   gradientTop = 25,
   gradientBottom = 25,
+  useFullColor = false,
 }: Props) {
   const initialized = useRef(false);
   const [tick, setTick] = useState(0);
@@ -36,18 +39,17 @@ export default function FormlessAnimatedContainer({
   useEffect(() => {
     const fn = window.animateContainer;
     console.log("[FormlessAnimatedContainer] effect", { id, tick, hasAnimateContainer: !!fn, initialized: initialized.current });
-    if (initialized.current) return;
     if (fn) {
       const el = document.getElementById(id);
-      console.log("[FormlessAnimatedContainer] calling animateContainer", { id, allowCursor: !isTouch, divInDom: !!el });
-      fn(id, !isTouch);
+      console.log("[FormlessAnimatedContainer] calling animateContainer", { id, allowCursor: !isTouch, divInDom: !!el, useFullColor });
+      fn(id, !isTouch, { useFullColor });
       initialized.current = true;
     } else {
       console.log("[FormlessAnimatedContainer] animateContainer not ready, retry in 100ms");
       const t = setTimeout(() => setTick((x) => x + 1), 100);
       return () => clearTimeout(t);
     }
-  }, [id, isTouch, tick]);
+  }, [id, isTouch, tick, useFullColor]);
 
   return (
     <div className={clsx("relative w-full", containerClassName)}>

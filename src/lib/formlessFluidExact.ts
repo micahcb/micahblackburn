@@ -11,6 +11,8 @@ export type FluidExactOptions = {
   blur_scale: number;
   enableBlur: boolean;
   colorScale: number;
+  /** When true, use full RGB color from velocity; when false, use greyscale only. */
+  useFullColor: boolean;
 };
 
 const DEFAULT_OPTIONS: FluidExactOptions = {
@@ -24,6 +26,7 @@ const DEFAULT_OPTIONS: FluidExactOptions = {
   blur_scale: 1.0,
   enableBlur: true,
   colorScale: 2.0,
+  useFullColor: false,
 };
 
 class MouseTracker {
@@ -351,6 +354,7 @@ export class FormlessFluidExact {
       uniforms: {
         uVel: { value: null },
         uColorScale: { value: this.opts.colorScale },
+        uUseFullColor: { value: this.opts.useFullColor ? 1.0 : 0.0 },
       },
       transparent: true,
       vertexShader: vs,
@@ -359,17 +363,25 @@ export class FormlessFluidExact {
         varying vec2 vUv;
         uniform sampler2D uVel;
         uniform float uColorScale;
+        uniform float uUseFullColor;
 
         void main(){
           vec2 vel = texture2D(uVel, vUv).xy;
           float len = length(vel);
-          vel = vel * 0.5 + 0.5;
-          float r = 0.35 * (1.0 - vel.x);
-          float g = vel.y * 0.85;
-          float b = vel.x * 1.0;
-          vec3 color = vec3(r, g, b);
-          vec3 ambient = vec3(0.97, 0.97, 1.0);
-          color = mix(ambient, color * uColorScale, min(len * 2.0, 1.0));
+          float t = min(len * 2.0, 1.0);
+          vec3 color;
+          if (uUseFullColor > 0.5) {
+            vel = vel * 0.5 + 0.5;
+            float r = 0.35 * (1.0 - vel.x);
+            float g = vel.y * 0.85;
+            float b = vel.x * 1.0;
+            vec3 rgb = vec3(r, g, b);
+            vec3 ambient = vec3(0.03, 0.02, 0.06);
+            color = mix(ambient, rgb * uColorScale, t);
+          } else {
+            float grey = mix(0.97, 0.4, t);
+            color = vec3(grey, grey, grey);
+          }
           gl_FragColor = vec4(color, 1.0);
         }
       `,

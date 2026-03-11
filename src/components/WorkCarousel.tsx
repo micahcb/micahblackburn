@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import clsx from "clsx";
 import Image from "next/image";
+import { useScrambleText } from "@/hooks/useScrambleText";
 
 export type WorkItem = {
   id: string;
@@ -10,6 +11,8 @@ export type WorkItem = {
   description: string;
   href?: string;
   logo?: string;
+  /** Optional white-label or related links to show in the expanded card */
+  relatedLinks?: { label: string; href: string }[];
 };
 
 const WORK_ITEMS: WorkItem[] = [
@@ -17,9 +20,14 @@ const WORK_ITEMS: WorkItem[] = [
     id: "smartbettor",
     title: "Smartbettor.ai",
     description:
-      "Web app for sports betting insights and analysis. Built with a modern stack to help users make data-informed decisions.",
+      "Web app for sports betting insights and analysis. Built with a modern stack to help users make data-informed decisions. White-labeled for Ball is Life, Betting.net, and Deadspin Picks+.",
     href: "https://www.smartbettor.ai/",
     logo: "/work_logos/SmartBettor.png",
+    relatedLinks: [
+      { label: "Ball is Life", href: "https://ballislife.com/betting/pro/" },
+      { label: "Betting.net", href: "https://www.betting.net/pro/" },
+      { label: "Deadspin Picks+", href: "https://deadspin.com/picksplus/" },
+    ],
   },
   {
     id: "oddible",
@@ -36,6 +44,14 @@ const WORK_ITEMS: WorkItem[] = [
       "Personal finance web app and Swift iOS app. Full-stack budgeting and tracking, deployed on Railway with a native iOS client.",
     href: "https://sycamore-production-0924.up.railway.app/",
     logo: "/work_logos/Sycamore.svg",
+  },
+  {
+    id: "bookwallet",
+    title: "Book Wallet",
+    description:
+      "The Plaid for sports betting — one hub to connect to all sportsbooks. Users see insights, track winnings and losses, and manage their sportsbook activity in one place.",
+    href: "https://bookwallet.dev/",
+    logo: "/work_logos/BookWallet.svg",
   },
   {
     id: "charles-schwab",
@@ -87,6 +103,7 @@ function PlaceholderIcon() {
 }
 
 export default function WorkCarousel() {
+  const workHeader = useScrambleText("Work");
   const [isHovering, setIsHovering] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
@@ -101,8 +118,12 @@ export default function WorkCarousel() {
 
   return (
     <section id="work" className="mt-32 pt-16 border-t border-black">
-      <h2 className="text-2xl font-semibold tracking-tight text-foreground mb-8">
-        Work
+      <h2
+        className="text-2xl font-semibold tracking-tight text-foreground mb-8 cursor-default"
+        onMouseEnter={workHeader.scramble}
+        onMouseLeave={workHeader.reset}
+      >
+        {workHeader.displayText}
       </h2>
 
       <div
@@ -178,6 +199,27 @@ export default function WorkCarousel() {
                 >
                   Visit site →
                 </a>
+              )}
+              {expandedItem.relatedLinks && expandedItem.relatedLinks.length > 0 && (
+                <div className="mt-4 pt-4 border-t border-border/40">
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">
+                    Also white-labeled for
+                  </p>
+                  <ul className="flex flex-wrap gap-2">
+                    {expandedItem.relatedLinks.map((link) => (
+                      <li key={link.href}>
+                        <a
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm font-medium text-foreground underline underline-offset-4 hover:text-muted-foreground transition-colors"
+                        >
+                          {link.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
             </div>
             <button

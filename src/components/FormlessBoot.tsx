@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
-import { FormlessFluidExact } from "@/lib/formlessFluidExact";
+import { FormlessFluidExact, type FluidExactOptions } from "@/lib/formlessFluidExact";
 
 type Registry = Map<string, FormlessFluidExact>;
 
 declare global {
   interface Window {
-    animateContainer?: (id: string, allowCursor?: boolean) => void;
+    animateContainer?: (id: string, allowCursor?: boolean, options?: Partial<FluidExactOptions>) => void;
     __formlessRegistry?: Registry;
   }
 }
@@ -19,7 +19,7 @@ export default function FormlessBoot() {
     console.log(LOG, "effect ran, registering animateContainer");
     if (!window.__formlessRegistry) window.__formlessRegistry = new Map();
 
-    window.animateContainer = (id: string, allowCursor = true) => {
+    window.animateContainer = (id: string, allowCursor = true, options: Partial<FluidExactOptions> = {}) => {
       const key = id || "__body__";
       const target = id ? document.getElementById(id) : document.body;
       console.log(LOG, "animateContainer called", { id, key, targetFound: !!target });
@@ -50,6 +50,8 @@ export default function FormlessBoot() {
           enableBlur: true,
           blur_scale: 1.0,
           colorScale: 2.0,
+          useFullColor: false,
+          ...options,
         });
         window.__formlessRegistry!.set(key, engine);
         console.log(LOG, "engine created and registered for", key);
