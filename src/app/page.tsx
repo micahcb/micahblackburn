@@ -1,65 +1,177 @@
-import Image from "next/image";
+"use client";
+
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { LordIcon } from "@/components/lord-icon";
+import { useScrambleText } from "@/hooks/useScrambleText";
+import BottomBar from "@/components/BottomBar";
+import FormlessBoot from "@/components/FormlessBoot";
+import FormlessAnimatedContainer from "@/components/FormlessAnimatedContainer";
+import WorkCarousel from "@/components/WorkCarousel";
+
+const LORDICON = {
+  work: "https://cdn.lordicon.com/kthelypq.json",
+  contact: "https://cdn.lordicon.com/slkvcfos.json",
+} as const;
 
 export default function Home() {
+  const contactHeader = useScrambleText("Contact");
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="relative min-h-screen bg-transparent font-sans antialiased">
+      <FormlessBoot />
+      <FormlessAnimatedContainer
+        id="home"
+        className="fixed inset-0 h-screen w-screen"
+        containerClassName="min-h-screen"
+        gradientTop={undefined}
+        gradientBottom={28}
+      >
+      {/* Minimal nav */}
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-sm">
+          <nav className="mx-auto flex h-14 max-w-3xl items-center justify-between px-6">
+            <Link
+              href="/"
+              className="text-sm font-medium text-foreground hover:text-muted-foreground transition-colors"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+            Micah Blackburn
+            </Link>
+            <div className="flex items-center gap-4">
+              <Link
+                id="nav-work"
+                href="#work"
+                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+              <LordIcon
+                src={LORDICON.work}
+                trigger="hover"
+                target="#nav-work"
+                size={18}
+                className="text-muted-foreground"
+              />
+              <span>Work</span>
+              </Link>
+              <Link
+                id="nav-contact"
+                href="#contact"
+                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+              <LordIcon
+                src={LORDICON.contact}
+                trigger="hover"
+                target="#nav-contact"
+                size={18}
+                className="text-muted-foreground"
+              />
+              <span>Contact</span>
+              </Link>
+            </div>
+          </nav>
+      </header>
+
+      {/* Hero — Wabi-style: one clear message, lots of space */}
+      <main id="main" className="mx-auto max-w-3xl px-6 pt-32 pb-24 sm:pt-40 sm:pb-32">
+          <section className="flex flex-col gap-8">
+            <h1 className="text-4xl font-semibold tracking-tight leading-[1.1] text-foreground sm:text-5xl md:text-6xl">
+            Designer & developer building products that matter.
+            </h1>
+            <p className="max-w-xl text-lg sm:text-xl text-muted-foreground leading-relaxed">
+            Welcome to the era of personal software — where craft meets clarity.
+            </p>
+            <div className="flex flex-wrap gap-4 pt-2 items-center">
+              <Button asChild size="lg" className="rounded-full px-6">
+              <Link href="#work">View work</Link>
+              </Button>
+              <div className="glass-btn-wrap glass-btn-wrap--cta">
+                <div className="glass-btn-shadow" aria-hidden />
+                <Link href="#contact" className="glass-btn">
+                  <span>Get in touch</span>
+                </Link>
+              </div>
+            </div>
+          </section>
+
+          <WorkCarousel />
+
+          <section id="contact" className="mt-32 pt-16 border-t border-border/40">
+            <h2
+              className="text-2xl font-semibold tracking-tight text-foreground cursor-default"
+              onMouseEnter={contactHeader.scramble}
+              onMouseLeave={contactHeader.reset}
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+              {contactHeader.displayText}
+            </h2>
+            <ul className="mt-4 space-y-2 text-muted-foreground">
+              <li>
+                <a
+                  href="https://github.com/micahcb"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground hover:text-muted-foreground transition-colors underline underline-offset-4"
+                >
+                  GitHub
+                </a>
+                {" — "}
+                <a
+                  href="https://github.com/micahcb"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground/80 hover:text-foreground transition-colors break-all"
+                >
+                  https://github.com/micahcb
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.linkedin.com/in/micah-blackburn/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground hover:text-muted-foreground transition-colors underline underline-offset-4"
+                >
+                  LinkedIn
+                </a>
+                {" — "}
+                <a
+                  href="https://www.linkedin.com/in/micah-blackburn/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground/80 hover:text-foreground transition-colors break-all"
+                >
+                  https://www.linkedin.com/in/micah-blackburn/
+                </a>
+              </li>
+              <li>
+                <span className="text-foreground">Email</span>
+                {" — "}
+                <a
+                  href="mailto:micahblackburn11@gmail.com"
+                  className="text-foreground/80 hover:text-foreground transition-colors break-all"
+                >
+                  micahblackburn11@gmail.com
+                </a>
+              </li>
+              <li>
+                <span className="text-foreground">Text</span>
+                {" — "}
+                <a
+                  href="tel:+13035051169"
+                  className="text-foreground/80 hover:text-foreground transition-colors"
+                >
+                  +1 303 505 1169
+                </a>
+              </li>
+            </ul>
+          </section>
       </main>
+
+      <footer className="border-t border-border/40 py-8">
+          <div className="mx-auto max-w-3xl px-6 text-sm text-muted-foreground">
+            © {new Date().getFullYear()} Micah Blackburn
+          </div>
+      </footer>
+
+      <BottomBar />
+      </FormlessAnimatedContainer>
     </div>
   );
 }
