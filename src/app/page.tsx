@@ -70,8 +70,9 @@ export default function Home() {
           </nav>
       </header>
 
-      {/* Content block with solid bg; z-10 so rounded bottom paints above surprise footer */}
-      <div className="relative z-10 w-full bg-background rounded-b-3xl">
+      <div className="bg-black">
+
+      <div className="relative z-10 w-full bg-white rounded-b-3xl">
       {/* Hero — Wabi-style: one clear message, lots of space */}
       <main id="main" className="mx-auto max-w-3xl px-6 pt-32 pb-24 sm:pt-40 sm:pb-32">
           <section className="flex flex-col gap-8">
@@ -165,6 +166,8 @@ export default function Home() {
               </li>
             </ul>
           </section>
+
+         
       </main>
 
       <footer className="border-t border-border/40 py-8">
@@ -172,7 +175,12 @@ export default function Home() {
             © {new Date().getFullYear()} Micah Blackburn
           </div>
       </footer>
+
+      
       </div>
+     
+      </div>
+      
 
       <SurpriseFooter />
       </FormlessAnimatedContainer>

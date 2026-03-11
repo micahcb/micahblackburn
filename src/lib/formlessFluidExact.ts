@@ -138,7 +138,7 @@ export class FormlessFluidExact {
     this.wrapper.appendChild(this.renderer.domElement);
     console.log("[FormlessFluidExact] canvas appended, size will be set in resize()");
 
-    this.mouse = new MouseTracker(() => this.wrapper.getBoundingClientRect());
+    this.mouse = new MouseTracker(() => this.renderer.domElement.getBoundingClientRect());
 
     this.initFBOs();
     this.initShaders();

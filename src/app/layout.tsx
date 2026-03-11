@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Micah Blackburn — Designer & Developer",
-  description: "Personal portfolio of Micah Blackburn. Designer and developer building products that matter.",
+  title: "Micah Blackburn — Full Stack Developer",
+  description: "Personal portfolio of Micah Blackburn. Full Stack Developer building products that matter.",
   icons: {
     icon: "/favicon.ico",
   },

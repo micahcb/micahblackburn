@@ -1,5 +1,14 @@
 "use client";
 
+/**
+ * Orbs: physics circles + circular image masking (not a shader sphere).
+ * - Matter.Bodies.circle for collisions/rotation (orb-like).
+ * - body.id -> { image } metadata; images preloaded from URLs.
+ * - Render: translate(position), rotate(angle), arc(0,0,r,0,2π), clip(), drawImage.
+ * - Rotation from collisions makes the image read as a physical disc.
+ * - restitution/friction/frictionAir/density = buoyant, bouncy, floaty.
+ * - Cursor force field ~180px repels orbs for "alive" behavior.
+ */
 import { useEffect, useRef } from "react";
 import Matter from "matter-js";
 
@@ -158,6 +167,8 @@ export function useSurpriseFooter() {
         }
       }
 
+      // Orb look: physics circle + circular image masking. Body angle from collisions
+      // gives rotation so the image reads as a physical disc.
       for (const orb of orbs) {
         const meta = orbMap.get(orb.id);
         const r = (orb as Matter.Body & { circleRadius?: number }).circleRadius ?? baseR;
@@ -165,20 +176,12 @@ export function useSurpriseFooter() {
         ctx.save();
         ctx.translate(orb.position.x, orb.position.y);
         ctx.rotate(orb.angle);
-
-        // Soft shadow so orbs look like bubbles
-        ctx.shadowColor = "rgba(0, 0, 0, 0.35)";
-        ctx.shadowBlur = 14;
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 5;
-
         ctx.beginPath();
         ctx.arc(0, 0, r, 0, Math.PI * 2);
         ctx.closePath();
         ctx.clip();
 
         if (meta?.image) {
-          // Sycamore logo is dark-on-transparent; add light background so it shows on dark footer
           if (meta.imageUrl.includes("Sycamore")) {
             ctx.fillStyle = "#e8e6e4";
             ctx.fill();
@@ -189,36 +192,8 @@ export function useSurpriseFooter() {
           ctx.fill();
         }
 
-        ctx.restore();
-
-        // Bubble rim and highlight (drawn after so they sit on top)
-        ctx.save();
-        ctx.translate(orb.position.x, orb.position.y);
-        ctx.rotate(orb.angle);
-        ctx.shadowColor = "transparent";
-        ctx.shadowBlur = 0;
-
-        ctx.beginPath();
-        ctx.arc(0, 0, r, 0, Math.PI * 2);
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // Top-left highlight for bubble sheen
-        const highlightGradient = ctx.createRadialGradient(
-          -r * 0.35,
-          -r * 0.35,
-          0,
-          -r * 0.35,
-          -r * 0.35,
-          r * 0.9
-        );
-        highlightGradient.addColorStop(0, "rgba(255, 255, 255, 0.28)");
-        highlightGradient.addColorStop(0.5, "rgba(255, 255, 255, 0.04)");
-        highlightGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
-        ctx.beginPath();
-        ctx.arc(0, 0, r, 0, Math.PI * 2);
-        ctx.fillStyle = highlightGradient;
+        // Matte overlay: soft flat layer to dull the surface
+        ctx.fillStyle = "rgba(255, 255, 255, 0.14)";
         ctx.fill();
 
         ctx.restore();
