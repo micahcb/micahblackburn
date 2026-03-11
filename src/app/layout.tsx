@@ -18,6 +18,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Micah Blackburn — Designer & Developer",
   description: "Personal portfolio of Micah Blackburn. Designer and developer building products that matter.",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
