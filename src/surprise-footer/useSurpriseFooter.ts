@@ -140,7 +140,7 @@ export function useSurpriseFooter() {
     }
 
     function draw() {
-      if (!engine) return;
+      if (!engine || !canvas) return;
       const b = rect();
       const dpr = window.devicePixelRatio || 1;
       const ctx = canvas.getContext("2d");
