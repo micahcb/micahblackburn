@@ -1,20 +1,20 @@
 "use client";
 
 /**
- * Orbs: physics circles + circular image masking (not a shader sphere).
- * - Matter.Bodies.circle for collisions/rotation (orb-like).
+ * Blocks: physics rectangles + square image masking.
+ * - Matter.Bodies.rectangle for collisions/rotation (block-like).
  * - body.id -> { image } metadata; images preloaded from URLs.
- * - Render: translate(position), rotate(angle), arc(0,0,r,0,2π), clip(), drawImage.
- * - Rotation from collisions makes the image read as a physical disc.
+ * - Render: translate(position), rotate(angle), rect(-h,-h,2h,2h), clip(), drawImage.
+ * - Rotation from collisions makes the image read as a physical block.
  * - restitution/friction/frictionAir/density = buoyant, bouncy, floaty.
- * - Cursor force field ~180px repels orbs for "alive" behavior.
+ * - Cursor force field ~180px repels blocks for "alive" behavior.
  */
 import { useEffect, useRef } from "react";
 import Matter from "matter-js";
 
 type OrbMeta = { imageUrl: string; image: HTMLImageElement | null };
 
-/** Work section logos — same as WorkCarousel so orbs use project logos */
+/** Work + education logos — orbs use project and school logos */
 const WORK_LOGO_URLS = [
   "/work_logos/SmartBettor.png",
   "/work_logos/Oddible.png",
@@ -23,6 +23,8 @@ const WORK_LOGO_URLS = [
   "/work_logos/CharlesSchwab.png",
   "/work_logos/SparkBeyond.png",
   "/work_logos/NYRR.png",
+  "/work_logos/Michigan.png",
+  "/work_logos/IE.png",
 ];
 
 function shuffle<T>(arr: T[]): T[] {
@@ -76,19 +78,21 @@ export function useSurpriseFooter() {
     function spawnOrb(x?: number, y?: number) {
       if (!engine) return;
       const b = rect();
-      const r = baseR * (0.9 + Math.random() * 0.2);
-      const px = x ?? Math.random() * (b.width - 2 * r) + r;
-      const py = y ?? -(2 * r) - Math.random() * 400;
+      const half = baseR * (0.9 + Math.random() * 0.2);
+      const size = 2 * half;
+      const px = x ?? Math.random() * (b.width - size) + half;
+      const py = y ?? -size - Math.random() * 400;
 
       const img = nextImage();
-      const body = Matter.Bodies.circle(px, py, r, {
+      const body = Matter.Bodies.rectangle(px, py, size, size, {
         restitution: 0.6,
         friction: 0.05,
         frictionAir: 0.005,
         density: 0.001,
         label: "orb",
         slop: 0.01,
-      });
+      }) as Matter.Body & { blockHalfSize?: number };
+      body.blockHalfSize = half;
 
       const meta: OrbMeta = { imageUrl: img, image: imageCache.get(img) ?? null };
       if (!meta.image) {
@@ -141,7 +145,6 @@ export function useSurpriseFooter() {
 
     function draw() {
       if (!engine || !canvas) return;
-      const b = rect();
       const dpr = window.devicePixelRatio || 1;
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
@@ -167,35 +170,65 @@ export function useSurpriseFooter() {
         }
       }
 
-      // Orb look: physics circle + circular image masking. Body angle from collisions
-      // gives rotation so the image reads as a physical disc.
+      // Block look: same bg as BottomBar menu items (bg-white/10, border-white/20)
       for (const orb of orbs) {
         const meta = orbMap.get(orb.id);
-        const r = (orb as Matter.Body & { circleRadius?: number }).circleRadius ?? baseR;
+        const half = (orb as Matter.Body & { blockHalfSize?: number }).blockHalfSize ?? baseR;
 
+        const radius = Math.min(12, half * 0.25);
         ctx.save();
         ctx.translate(orb.position.x, orb.position.y);
         ctx.rotate(orb.angle);
         ctx.beginPath();
-        ctx.arc(0, 0, r, 0, Math.PI * 2);
-        ctx.closePath();
+        ctx.roundRect(-half, -half, 2 * half, 2 * half, radius);
         ctx.clip();
+
+        // Same as BottomBar menu: bg-white/10
+        ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
+        ctx.fill();
 
         if (meta?.image) {
           if (meta.imageUrl.includes("Sycamore")) {
             ctx.fillStyle = "#e8e6e4";
             ctx.fill();
           }
-          ctx.drawImage(meta.image, -r, -r, 2 * r, 2 * r);
-        } else {
-          ctx.fillStyle = "#ddd";
-          ctx.fill();
+          // Shrink logos so the glass bg is visible around them
+          const isPaddedLogo = meta.imageUrl.includes("Michigan") || meta.imageUrl.includes("/IE.") || meta.imageUrl.includes("NYRR.png");
+          const size = isPaddedLogo ? half * 0.5 : half * 0.7;
+          // Preserve aspect ratio so logos (e.g. Michigan) don't stretch
+          const iw = meta.image.naturalWidth || 1;
+          const ih = meta.image.naturalHeight || 1;
+          const scale = (2 * size) / Math.max(iw, ih);
+          const drawW = iw * scale;
+          const drawH = ih * scale;
+          if (meta.imageUrl.includes("Oddible")) {
+            // Round the Oddible logo graphic itself
+            ctx.save();
+            ctx.beginPath();
+            ctx.roundRect(-size, -size, 2 * size, 2 * size, Math.min(14, size * 0.35));
+            ctx.clip();
+            ctx.drawImage(meta.image, -drawW / 2, -drawH / 2, drawW, drawH);
+            ctx.restore();
+          } else {
+            ctx.drawImage(meta.image, -drawW / 2, -drawH / 2, drawW, drawH);
+          }
         }
 
         // Matte overlay: soft flat layer to dull the surface
-        ctx.fillStyle = "rgba(255, 255, 255, 0.14)";
+        ctx.fillStyle = "rgba(255, 255, 255, 0.08)";
         ctx.fill();
 
+        ctx.restore();
+
+        // Border: same as BottomBar menu (border-white/20)
+        ctx.save();
+        ctx.translate(orb.position.x, orb.position.y);
+        ctx.rotate(orb.angle);
+        ctx.beginPath();
+        ctx.roundRect(-half, -half, 2 * half, 2 * half, radius);
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
         ctx.restore();
       }
     }

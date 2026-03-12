@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { LordIcon } from "@/components/lord-icon";
 import { useScrambleText } from "@/hooks/useScrambleText";
@@ -11,11 +12,13 @@ import FormlessAnimatedContainer from "@/components/FormlessAnimatedContainer";
 import WorkCarousel from "@/components/WorkCarousel";
 
 const LORDICON = {
+  education: "https://cdn.lordicon.com/ofrdcast.json",
   work: "https://cdn.lordicon.com/kthelypq.json",
   contact: "https://cdn.lordicon.com/slkvcfos.json",
 } as const;
 
 export default function Home() {
+  const educationHeader = useScrambleText("Education");
   const contactHeader = useScrambleText("Contact");
 
   return (
@@ -38,6 +41,20 @@ export default function Home() {
             Micah Blackburn
             </Link>
             <div className="flex items-center gap-4">
+              <Link
+                id="nav-education"
+                href="#education"
+                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <LordIcon
+                  src={LORDICON.education}
+                  trigger="hover"
+                  target="#nav-education"
+                  size={18}
+                  className="text-muted-foreground"
+                />
+                <span>Education</span>
+              </Link>
               <Link
                 id="nav-work"
                 href="#work"
@@ -90,6 +107,48 @@ export default function Home() {
                 <Link href="#contact" className="glass-btn">
                   <span>Get in touch</span>
                 </Link>
+              </div>
+            </div>
+          </section>
+
+          <section id="education" className="mt-32 pt-16 border-t border-black">
+            <h2
+              className="text-2xl font-semibold tracking-tight text-foreground mb-8 cursor-default"
+              onMouseEnter={educationHeader.scramble}
+              onMouseLeave={educationHeader.reset}
+            >
+              {educationHeader.displayText}
+            </h2>
+            <div className="flex flex-col gap-6">
+              <div className="flex items-center gap-4">
+                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-secondary/80">
+                  <Image
+                    src="/work_logos/Michigan.png"
+                    alt=""
+                    width={64}
+                    height={64}
+                    className="object-contain p-1.5"
+                  />
+                </div>
+                <div>
+                  <p className="font-medium text-foreground">University of Michigan</p>
+                  <p className="text-sm text-muted-foreground mt-0.5">Ann Arbor, MI · Aug 2020 – May 2024 · GPA: 3.78</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-secondary/80">
+                  <Image
+                    src="/work_logos/IE.png"
+                    alt=""
+                    width={64}
+                    height={64}
+                    className="object-contain p-1.5"
+                  />
+                </div>
+                <div>
+                  <p className="font-medium text-foreground">IE Business School</p>
+                  <p className="text-sm text-muted-foreground mt-0.5">Madrid, Spain · Jan 2023 – May 2023 · Study abroad</p>
+                </div>
               </div>
             </div>
           </section>
@@ -147,10 +206,10 @@ export default function Home() {
                 <span className="text-foreground">Email</span>
                 {" — "}
                 <a
-                  href="mailto:micahblackburn11@gmail.com"
+                  href="mailto:micahcb@umich.edu"
                   className="text-foreground/80 hover:text-foreground transition-colors break-all"
                 >
-                  micahblackburn11@gmail.com
+                  micahcb@umich.edu
                 </a>
               </li>
               <li>

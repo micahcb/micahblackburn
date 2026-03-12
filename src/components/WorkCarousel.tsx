@@ -18,9 +18,9 @@ export type WorkItem = {
 const WORK_ITEMS: WorkItem[] = [
   {
     id: "smartbettor",
-    title: "Smartbettor.ai",
+    title: "Smartbettor.AI",
     description:
-      "Web app for sports betting insights and analysis. Built with a modern stack to help users make data-informed decisions. White-labeled for Ball is Life, Betting.net, and Deadspin Picks+.",
+      "CTO and Co-founder (Jan 2024 – present), New York. Full-stack engineer and technical lead for a web-based subscription platform with 500+ paying users. Directed the rebrand and product pivot to Oddible, launching on iOS and Android with B2B integration software. Raised pre-seed and seed funding to support product growth and scaling. White-labeled for Ball is Life, Betting.net, and Deadspin Picks+.",
     href: "https://www.smartbettor.ai/",
     logo: "/work_logos/SmartBettor.png",
     relatedLinks: [
@@ -33,7 +33,7 @@ const WORK_ITEMS: WorkItem[] = [
     id: "oddible",
     title: "Oddible.ai",
     description:
-      "React Native mobile app — the companion to Smartbettor.ai. Cross-platform iOS and Android with shared business logic and native-feel UI.",
+      "Product launched from the Smartbettor rebrand. React Native mobile app for iOS and Android with B2B integration, shared business logic, and native-feel UI. Companion to the Smartbettor.ai web platform.",
     href: "https://www.oddible.ai/",
     logo: "/work_logos/Oddible.png",
   },
@@ -57,14 +57,14 @@ const WORK_ITEMS: WorkItem[] = [
     id: "charles-schwab",
     title: "Charles Schwab",
     description:
-      "Engineering work at Charles Schwab — building and maintaining financial platforms and tooling for advisors and clients.",
+      "Data Engineer Intern (Jun – Aug 2023), Austin, TX. Built a data pipeline connecting Salesforce Marketing Cloud to a downstream Java application for regulatory compliance logging. Collaborated with business partners on data imports for marketing email campaigns. Worked in an Agile Scrum team to deliver CI/CD enhancements and improve supportability.",
     logo: "/work_logos/CharlesSchwab.png",
   },
   {
     id: "sparkbeyond",
     title: "SparkBeyond",
     description:
-      "AI and data science platform work — building tools and pipelines that help organizations discover insights from complex data.",
+      "Data Analyst Intern (Jun – Aug 2022), Tel Aviv. Orchestrated business analysis with McKinsey & Co, using SparkBeyond SaaS for three client business intelligence projects. Delivered storytelling insights and data ingestion tools. Implemented a Python GPT-3 AI algorithm that increased research accuracy and led to reconstruction of the platform’s IT stack.",
     logo: "/work_logos/SparkBeyond.png",
   },
   {
